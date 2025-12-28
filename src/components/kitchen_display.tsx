@@ -164,8 +164,6 @@ function KitchenDisplay() {
                 </div>
             </button>
 
-            <Toaster position="top-right" />
-
             <div className="flex gap-6 h-full items-start justify-center w-full max-w-7xl mx-auto px-4">
                 <DragDropContext onDragEnd={moveOrder}>
                     {Object.entries(columns).map(([columnId, column]) => {

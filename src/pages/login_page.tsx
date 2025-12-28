@@ -18,15 +18,25 @@ function LoginPage() {
     });
 
     const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
-        console.log("Dados do formulário:", data);
-        
-        const success = await auth_service.login(data.email, data.password);
-        if (success) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
+        try {
+            await auth_service.login(data.email, data.password);
+            
             toast.success("Login realizado com sucesso!", { duration: 2000 });
             navigate("/dashboard");
-        } else {
-            toast.error("Email ou senha incorretos.");
+
+        } catch (error: any) {
+            let mensagemErro = "Ocorreu um erro inesperado.";
+
+            if (error?.response?.data?.details) {
+                mensagemErro = error.response.data.details;
+                console.log("Mensagem extraída de details:", mensagemErro);
+            } else if (error?.response?.data?.message) {
+                mensagemErro = error.response.data.message;
+            } else {
+                console.log("Não encontrou details nem message no response data");
+            }
+            
+            toast.error(mensagemErro, { duration: 2000 });
         }
     };
 

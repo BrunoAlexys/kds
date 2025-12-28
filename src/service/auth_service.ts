@@ -33,7 +33,7 @@ class AuthService {
             return false;
         } catch (error) {
             console.error('Login failed:', error);
-            return false;
+            throw error;
         }
     }
 
