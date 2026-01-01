@@ -7,11 +7,18 @@ import { LoginSchema, type LoginFormData } from "../schema/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import auth_service from "../service/auth_service";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function LoginPage() {
 
+    const GOOGLE_CLIENT_ID = "66939748902-94jco9g7b81l36t3e61hd0qtf22srrs7.apps.googleusercontent.com";
+    const REDIRECT_URI = "http://localhost:5173/oauth2/redirect";
+    const SCOPE = "openid email profile";
+    const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}`;
+
     const navigate = useNavigate();
+    const location = useLocation();
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
         resolver: zodResolver(LoginSchema),
@@ -19,7 +26,7 @@ function LoginPage() {
 
     const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
         console.log("Dados do formulário:", data);
-        
+
         const success = await auth_service.login(data.email, data.password);
         if (success) {
             await new Promise(resolve => setTimeout(resolve, 1000));
@@ -29,6 +36,17 @@ function LoginPage() {
             toast.error("Email ou senha incorretos.");
         }
     };
+
+    useEffect(() => {
+        if (location.state?.errorMessage) {
+            toast.error(location.state.errorMessage, {
+                id: 'login-error',
+                duration: 4000,
+            });
+            
+            window.history.replaceState({}, document.title);
+        }
+    }, [location]);
 
     return (
         <div className="flex flex-row min-h-screen w-full bg-linear-to-br from-[#0D47A1] to-[#1976D2]">
@@ -67,7 +85,16 @@ function LoginPage() {
                             <span className="shrink-0 mx-4 text-gray-400 text-sm">Ou</span>
                             <div className="grow border-t border-gray-300"></div>
                         </div>
-                        <Button className="cursor-pointer" variant="outline" icon={<img src={Google} alt="Google" className="w-5 h-5" />}>Entrar com o Google</Button>
+                        <a href={googleLoginUrl} className="w-full">
+                            <Button
+                                type="button"
+                                className="cursor-pointer w-full"
+                                variant="outline"
+                                icon={<img src={Google} alt="Google" className="w-5 h-5" />}
+                            >
+                                Entrar com o Google
+                            </Button>
+                        </a>
                     </div>
                 </form>
             </div>
