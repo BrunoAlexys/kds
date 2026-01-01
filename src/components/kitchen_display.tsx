@@ -2,24 +2,9 @@ import { useEffect, useRef, useMemo, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useKitchenStore } from "../store/useKitchenStore";
 import { useKitchenOrders } from "../hooks/useKitchenQueries"; 
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
+import VolumeIcon from "./VolumeIcon";
 
-const VolumeIcon = ({ muted }: { muted: boolean }) => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        {muted ? (
-            <>
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <line x1="23" y1="9" x2="17" y2="15" />
-                <line x1="17" y1="9" x2="23" y2="15" />
-            </>
-        ) : (
-            <>
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
-            </>
-        )}
-    </svg>
-);
 
 const columnStyles: Record<string, { card: string; badge: string; price: string; divider: string; headerBadge: string; tableText: string; }> = {
     "col-1": { card: "bg-red-50 border-red-400", badge: "bg-red-600 text-white", price: "text-red-600", divider: "border-red-200", headerBadge: "bg-red-500 text-white", tableText: "text-gray-600" },
@@ -163,9 +148,6 @@ function KitchenDisplay() {
                     <VolumeIcon muted={isMuted} />
                 </div>
             </button>
-
-            <Toaster position="top-right" />
-
             <div className="flex gap-6 h-full items-start justify-center w-full max-w-7xl mx-auto px-4">
                 <DragDropContext onDragEnd={moveOrder}>
                     {Object.entries(columns).map(([columnId, column]) => {

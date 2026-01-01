@@ -12,6 +12,7 @@ interface LoginResponse {
 class AuthService {
     
     private readonly LOGIN_ENDPOINT = '/auth/login';
+    private readonly GOOGLE_LOGIN_ENDPOINT = '/auth/google';
 
     public async login(email: string, password: string): Promise<boolean> {
         try {
@@ -35,6 +36,32 @@ class AuthService {
             console.error('Login failed:', error);
             return false;
         }
+    }
+
+    public async loginWithGoogle(code: string): Promise<boolean> {
+        try {
+            const data = await apiClient.post<LoginResponse>(this.GOOGLE_LOGIN_ENDPOINT, {
+                code
+            });
+
+            return this.handleSession(data);
+        } catch (error) {
+            console.error('Google login failed:', error);
+            return false;
+        }
+    }
+
+    private handleSession(data: LoginResponse): boolean {
+        if (data && data.accessToken) {
+            localStorage.setItem('authToken', data.accessToken);
+            if (data.user) {
+                localStorage.setItem('userInfo', JSON.stringify(data.user));
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     public logout(): void {
