@@ -12,8 +12,8 @@ import { useEffect } from "react";
 
 function LoginPage() {
 
-    const GOOGLE_CLIENT_ID = "66939748902-94jco9g7b81l36t3e61hd0qtf22srrs7.apps.googleusercontent.com";
-    const REDIRECT_URI = "http://localhost:5173/oauth2/redirect";
+    const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
     const SCOPE = "openid email profile";
     const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}`;
 
@@ -43,7 +43,7 @@ function LoginPage() {
                 id: 'login-error',
                 duration: 4000,
             });
-            
+
             window.history.replaceState({}, document.title);
         }
     }, [location]);
