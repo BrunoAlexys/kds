@@ -22,9 +22,9 @@ function KdsPage() {
         return () => clearInterval(interval);
     }, [fetchAverageTime])
 
-    const pendingCount = columns['col-1'].items.length;
-    const doingCount = columns['col-2'].items.length;
-    const doneCount = columns['col-3'].items.length;
+    const pendingCount = columns['col-1']?.items.length || 0;
+    const doingCount = columns['col-2']?.items.length || 0;
+    const doneCount = columns['col-3']?.items.length || 0;
 
     const formatAverageTime = (valueInMinutes: number) => {
         if (!valueInMinutes) return '0m';
@@ -42,14 +42,19 @@ function KdsPage() {
     };
 
     return (
-        <div className='min-h-screen bg-[#F7F7F7] flex flex-col'>
+        <div className='min-h-screen bg-[#F0F2F5] flex flex-col'>
             <Menu />
-            <main className='flex flex-col flex-1 px-8 py-8 gap-8'>
-                <div className='grid grid-cols-4 gap-6'>
+            <main className='flex flex-col flex-1 px-8 py-4 gap-5'>
+                <div className='text-3xl font-bold text-[#0F172A]'>
+                    Pedidos
+                </div>
+                <div className='grid grid-cols-4 gap-5'>
                     <Card
                         title='Pendentes'
                         number={pendingCount}
                         icon={Timer}
+                        backgroundColor='bg-redLight'
+                        borderColor='FF5151'
                     />
                     <Card
                         title='Em Preparo'
@@ -57,6 +62,7 @@ function KdsPage() {
                         backgroundColor='bg-orangePrimary'
                         numberColor='text-orangePrimary'
                         icon={Lunch}
+                        borderColor='FC9300'
                     />
                     <Card
                         title='Pronto'
@@ -64,6 +70,7 @@ function KdsPage() {
                         backgroundColor='bg-greenPrimary'
                         numberColor='text-greenPrimary'
                         icon={Checked}
+                        borderColor='22C55E'
                     />
                     <Card
                         title='Tempo médio'
@@ -71,6 +78,7 @@ function KdsPage() {
                         backgroundColor='bg-bluePrimary'
                         numberColor='text-bluePrimary'
                         icon={Clock}
+                        borderColor='2F2BFF'
                     />
                 </div>
                 <div className='flex-1 w-full '>
