@@ -1,4 +1,4 @@
-import { OrderTableRow, type Order } from "./orderTableRow";
+import { OrderTableRow, type Order } from "./OrderTableRow";
 
 interface OrderTableProps {
   orders: Order[];
