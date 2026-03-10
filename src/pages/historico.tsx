@@ -1,5 +1,4 @@
 import Menu from "../components/menu";
-import Input from "../components/input";
 import { OrderTableRow } from "../components/historico/OrderTableRow";
 import { ChevronDown, Search } from "lucide-react";
 
