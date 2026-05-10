@@ -80,8 +80,9 @@ export const useKitchenStore = create<KitchenState>((set, get) => {
 
         connectWebSocket: () => {
             if (stompClient?.active) return;
-
-            const socket = new SockJS('http://localhost:8080/ws');
+            
+            const baseUrl = import.meta.env.VITE_API_BASE_URL.replace('/v1/api', '');
+            const socket = new SockJS(`${baseUrl}/ws`);
             stompClient = new Client({
                 webSocketFactory: () => socket,
                 reconnectDelay: 5000,

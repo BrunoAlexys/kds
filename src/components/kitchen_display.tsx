@@ -5,11 +5,34 @@ import { useKitchenOrders } from "../hooks/useKitchenQueries";
 import toast from 'react-hot-toast';
 import VolumeIcon from "./VolumeIcon";
 
-
-const columnStyles: Record<string, { card: string; badge: string; price: string; divider: string; headerBadge: string; tableText: string; }> = {
-    "col-1": { card: "bg-red-50 border-red-400", badge: "bg-red-600 text-white", price: "text-red-600", divider: "border-red-200", headerBadge: "bg-red-500 text-white", tableText: "text-gray-600" },
-    "col-2": { card: "bg-yellow-50 border-yellow-400", badge: "bg-orange-500 text-white", price: "text-yellow-900", divider: "border-yellow-200", headerBadge: "bg-orange-500 text-white", tableText: "text-yellow-900" },
-    "col-3": { card: "bg-green-50 border-green-400", badge: "bg-green-500 text-white", price: "text-green-600", divider: "border-green-200", headerBadge: "bg-green-500 text-white", tableText: "text-gray-600" }
+const columnStyles: Record<string, { card: string; badge: string; price: string; divider: string; headerBadge: string; tableText: string; borderColor: string; }> = {
+    "col-1": { 
+        card: "bg-red-50 border-red-400", 
+        badge: "bg-red-600 text-white", 
+        price: "text-red-600", 
+        divider: "border-red-200", 
+        headerBadge: "bg-red-500 text-white", 
+        tableText: "text-gray-600",
+        borderColor: "#FF5151" // Cor exata do Card Pendentes
+    },
+    "col-2": { 
+        card: "bg-yellow-50 border-yellow-400", 
+        badge: "bg-orange-500 text-white", 
+        price: "text-yellow-900", 
+        divider: "border-yellow-200", 
+        headerBadge: "bg-orange-500 text-white", 
+        tableText: "text-yellow-900",
+        borderColor: "#FC9300" // Cor exata do Card Em Preparo
+    },
+    "col-3": { 
+        card: "bg-green-50 border-green-400", 
+        badge: "bg-green-500 text-white", 
+        price: "text-green-600", 
+        divider: "border-green-200", 
+        headerBadge: "bg-green-500 text-white", 
+        tableText: "text-gray-600",
+        borderColor: "#22C55E" // Cor exata do Card Pronto
+    }
 };
 
 const getFormattedElapsedTime = (dateString?: string | null) => {
@@ -121,7 +144,7 @@ function KitchenDisplay() {
     }
 
     return (
-        <div className="flex h-screen w-full bg-[#F7F7F7] p-8 gap-6 overflow-hidden flex-col font-sans relative">
+        <div className="flex h-screen w-full bg-[#F0F2F5] p-8 gap-6 overflow-hidden flex-col font-sans relative">
             <style>
                 {`
                 @keyframes shake {
@@ -148,12 +171,16 @@ function KitchenDisplay() {
                     <VolumeIcon muted={isMuted} />
                 </div>
             </button>
-            <div className="flex gap-6 h-full items-start justify-center w-full max-w-7xl mx-auto px-4">
+            <div className="flex gap-20 h-full items-start justify-center w-full max-w-7xl mx-auto px-4">
                 <DragDropContext onDragEnd={moveOrder}>
                     {Object.entries(columns).map(([columnId, column]) => {
                         const currentStyle = columnStyles[columnId] || columnStyles["col-1"];
                         return (
-                            <div key={columnId} className="flex flex-col flex-1 min-w-0 bg-white rounded-3xl p-5 shadow-sm h-full border border-gray-100">
+                            <div 
+                                key={columnId} 
+                                className="flex flex-col flex-1 min-w-0 bg-white rounded-3xl p-5 shadow-sm h-full border border-gray-100 border-t-4"
+                                style={{ borderTopColor: currentStyle.borderColor }}
+                            >
                                 <div className="flex justify-between items-center mb-6 px-1">
                                     <h3 className="text-xl font-bold text-gray-800 tracking-tight">{column.name}</h3>
                                     <span className={`${currentStyle.headerBadge} flex items-center justify-center text-sm font-bold w-9 h-9 rounded-full shadow-sm`}>
