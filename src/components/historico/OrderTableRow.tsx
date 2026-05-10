@@ -1,13 +1,14 @@
 import { Eye, Printer } from "lucide-react";
 
 export interface Order {
-  id: string;
+  id: number;
+  orderNumber: string;
   date: string;
   time: string;
   table: string;
-  items: string;
-  subItems: string;
-  value: string;
+  mainItems: string;
+  additionalComment: string;
+  totalValue: string;
   paymentMethod: "Cartão" | "Pix" | "Dinheiro";
 }
 
@@ -27,7 +28,7 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
       <td className="p-4 w-12 text-center">
         <input type="checkbox" className="rounded border-gray-300 accent-blue-900" />
       </td>
-      <td className="p-4 font-semibold text-gray-700">{order.id}</td>
+      <td className="p-4 font-semibold text-gray-700">{order.orderNumber}</td>
       <td className="p-4">
         <div className="text-sm font-bold text-gray-700">{order.date}</div>
         <div className="text-xs text-gray-400">{order.time}</div>
@@ -38,10 +39,10 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
         </div>
       </td>
       <td className="p-4">
-        <div className="font-bold text-gray-800">{order.items}</div>
-        <div className="text-xs text-gray-400">{order.subItems}</div>
+        <div className="font-bold text-gray-800">{order.mainItems}</div>
+        <div className="text-xs text-gray-400">{order.additionalComment}</div>
       </td>
-      <td className="p-4 font-bold text-gray-800">{order.value}</td>
+      <td className="p-4 font-bold text-gray-800">{order.totalValue}</td>
       <td className="p-4">
         <span className={`px-4 py-1.5 rounded-md text-xs font-bold flex items-center justify-center w-24 gap-1 ${paymentStyles[order.paymentMethod]}`}>
           {order.paymentMethod === "Pix" && <span className="text-[10px]">💠</span>}
